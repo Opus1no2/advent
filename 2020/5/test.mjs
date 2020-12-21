@@ -6,7 +6,6 @@ const input = fs.readFileSync('./input.txt', 'utf-8').split("\n").filter(n => n)
 const testInput = fs.readFileSync('./test_input.txt', 'utf-8').split("\n").filter(n => n);
 
 test(820, part1(testInput));
-//test(0, part2(testInput));
 
 console.log("answer for part 1:", part1(input));
-//console.log("answer for part 2:", part2(input));
+console.log("answer for part 2:", part2(input));

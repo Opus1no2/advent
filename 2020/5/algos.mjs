@@ -1,4 +1,4 @@
-const part1 = (input) => {
+const seatIds = (input) => {
   let seatIDs = [];
 
   const bin = (fb, min, max) => {
@@ -27,12 +27,22 @@ const part1 = (input) => {
     const colCount = bin(lr, 0, 7);
     seatIDs.push(rowCount * 8 + colCount);
   }
+  return seatIDs;
+};
 
-  return Math.max(...seatIDs);
+const part1 = (input) => {
+  const ids = seatIds(input);
+  return Math.max(...ids);
 };
 
 const part2 = (input) => {
-  //return input;
+  const ids = seatIds(input).sort((a, b) => { return a - b });
+
+  for (let i = ids.length; i > 0; i--) {
+    if (ids[i] - ids[i - 1] > 1) {
+      return ids[i] - 1;
+    }
+  }
 };
 
 export { part1, part2 };
