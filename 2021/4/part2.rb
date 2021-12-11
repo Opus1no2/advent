@@ -1,11 +1,11 @@
-test_input = File.read('test_input').split("\n")
+# frozen_string_literal: true
+
 input = File.read('input').split("\n")
 
 draws = input[0].split(',')
 
-boards =  input[2..input.length].chunk{ |i| i.length > 0 }.inject([]) do |r, i|
+boards = input[2..input.length].chunk { |i| i.length.positive? }.each_with_object([]) do |i, r|
   r << i[1].map(&:split) if i[0]
-  r
 end
 
 board_states = boards.map do |board|

@@ -1,11 +1,11 @@
-test_input = File.read('test_input').split("\n")
+# frozen_string_literal: true
+
 input = File.read('input').split("\n")
 
 draws = input[0].split(',')
 
-boards =  input[2..input.length].chunk{ |i| i.length > 0 }.inject([]) do |r, i|
+boards = input[2..input.length].chunk { |i| i.length.positive? }.each_with_object([]) do |i, r|
   r << i[1].map(&:split) if i[0]
-  r
 end
 
 board_states = boards.map do |board|
@@ -31,13 +31,13 @@ draws.each do |draw|
           if winning_rows || winning_cols
             sum = 0
             board_states[b_idx].each.with_index do |s_row, s_idx|
-              s_row.each.with_index do |s_cell, c_idx|
-                sum += board[s_idx][c_idx].to_i if s_cell == 0
+              s_row.each.with_index do |s_cell, cidx|
+                sum += board[s_idx][cidx].to_i if s_cell.zero?
               end
             end
 
             pp sum * draw.to_i
-            return
+            return 0
           end
         end
       end
