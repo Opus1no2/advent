@@ -60,7 +60,11 @@ def solve(dir_map)
     end
   end
 
-  total_map.select { |_dir, total| total <= 100_000 }.values.reduce(:+)
+  unused_space = 70_000_000 - total_map['/']
+  space_needed = 30_000_000 - unused_space
+
+  total_map.select { |_, val| val >= space_needed }
+           .min_by { |_k, v| v }.last
 end
 
 directory_map = dir_map('', {}, 0, inputs)
