@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 require 'pp'
+require 'pry'
 
 tree_grid = File.read('./input.txt').split("\n")
-                .map { |row| row.split('') }
-                .map { |row| row.map(&:to_i) }
+                .map { |row| row.split('').map(&:to_i) }
 
-perimiter_count = tree_grid.first.length + tree_grid.last.length + ((tree_grid.length - 2) * 2)
-
-inner_grid_count = 0
+max_scenic_score = -1
 
 tree_grid.each.with_index do |row, i|
   next if i.zero? || i == tree_grid.length - 1
@@ -16,34 +14,29 @@ tree_grid.each.with_index do |row, i|
   row.each.with_index do |cell, j|
     next if j.zero? || j == row.length - 1
 
-    top_visible = (0..(i - 1)).to_a.all? { |v| tree_grid[v][j] < cell }
+    top = (0..(i - 1)).to_a.reverse
+    left = (0..(j - 1)).to_a.reverse
+    bottom = ((i + 1)..(tree_grid.length - 1)).to_a
+    right = ((j + 1)..(row.length - 1)).to_a
 
-    if top_visible
-      inner_grid_count += 1
-      next
+    top_bottom = [top, bottom].map do |path|
+      path.reduce(0) do |sum, v|
+        (break sum + 1) if tree_grid[v][j] >= cell
+        sum + 1 if tree_grid[v][j] < cell
+      end
     end
 
-    left_visible = (0..(j - 1)).to_a.all? { |v| tree_grid[i][v] < cell }
-
-    if left_visible
-      inner_grid_count += 1
-      next
+    left_right = [left, right].map do |path|
+      path.reduce(0) do |sum, v|
+        (break sum + 1) if tree_grid[i][v] >= cell
+        sum + 1 if tree_grid[i][v] < cell
+      end
     end
 
-    bottom_visible = ((i + 1)..(tree_grid.length - 1)).to_a.all? { |v| tree_grid[v][j] < cell }
+    score = (top_bottom + left_right).reduce(:*)
 
-    if bottom_visible
-      inner_grid_count += 1
-      next
-    end
-
-    right_visible = ((j + 1)..(row.length - 1)).to_a.all? { |v| tree_grid[i][v] < cell }
-
-    if right_visible
-      inner_grid_count += 1
-      next
-    end
+    max_scenic_score = score > max_scenic_score ? score : max_scenic_score
   end
 end
 
-pp inner_grid_count + perimiter_count
+p max_scenic_score
