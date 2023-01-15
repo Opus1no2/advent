@@ -22,18 +22,16 @@ end
 
 instructions.each do |instruction|
   if instruction.first == 'noop'
+    row = cycle if (cycle % 40).zero?
     cycle += 1
-
-    row = cycle - 1 if ((cycle - 1) % 40).zero?
     set_sprite(x, row, sprite)
     screen << screen_char(sprite, cycle)
     next
   end
 
   2.times do
+    row = cycle if (cycle % 40).zero?
     cycle += 1
-
-    row = cycle - 1 if ((cycle - 1) % 40).zero?
     set_sprite(x, row, sprite)
     screen << screen_char(sprite, cycle)
   end
