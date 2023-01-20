@@ -15,4 +15,4 @@ max=${dirs[${#dirs[@]}-1]}
 # Create a new directory with the incremented maximum number
 mkdir "$max"
 cd "$max"
-touch input.txt sample.txt part_one.rb part_two.rb
+touch input.txt sample.txt solution.rb
